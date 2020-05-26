@@ -1,0 +1,42 @@
+import pandas as pd
+import my_ebay_lib as ebay
+
+
+def str_to_float_price(str_prices):
+    float_prices=[]
+    for str_price in str_prices:
+        float_price=float(str_price.strip('$'))
+        float_prices.append(float_price)
+    return float_prices
+
+df= pd.read_csv('bluq2.csv')
+#print(df.info())
+#print(df.head())
+
+
+#print("Product Names and Prices")
+#names=df[["Product Name","Orig. Retail"]]
+#print(names)
+
+#subdf=df[df["Product Name"].str.contains("Post-It", case=False)]
+#print(subdf)
+#print(subdf["Product Name"])
+
+dfnew=df.fillna(" ")
+
+#print("DOES BRAND COLUMN Exist?")
+
+#poststuff=dfnew[dfnew.Brand.str.contains("Nintendo", case=False)]
+#print(poststuff)
+
+pallet_cost=sum(str_to_float_price(df["Ave. Price per Unit"]))
+print(pallet_cost)
+
+pnames=df["Product Name"]
+ebay_sale_total=0
+for name_obj in pnames:
+    name=name_obj
+    print(name)
+    price=ebay.fetch_ebay_price(name)
+    print(price)
+    ebay_sale_total+=price
