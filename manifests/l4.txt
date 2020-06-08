@@ -1,0 +1,12 @@
+
+Product	Quantity	Retail Price	Total Retail Price	UPC	Notes
+TCL 43S425-CA 4K Ultra HD Smart LED Television (2019), 43"	1	$318.00	$318.00		
+TCL 43S425-CA 4K Ultra HD Smart LED Television (2019), 43"	1	$318.00	$318.00		
+TCL 43S425-CA 4K Ultra HD Smart LED Television (2019), 43"	1	$318.00	$318.00		
+Sony X800G 49 Inch TV: 4K Ultra HD Smart LED TV with HDR and Alexa Compatibility - 2019 Model	1	$308.16	$308.16		
+Samsung UN43N5300AFXZC 43" 1080p Full HD Smart LED TV (2018), Glossy Black [Canada Version]	1	$132.77	$132.77		
+TCL 40S325-CA 1080p Smart LED Television (2019), 40"	1	$112.62	$112.62		
+TCL 40S325-CA 1080p Smart LED Television (2019), 40"	1	$112.62	$112.62		
+TCL 40S325-CA 1080p Smart LED Television (2019), 40"	1	$112.62	$112.62		
+Proscan PLEDV2488A 24-Inch LED HD TV with Built-in DVD Player	1	$52.76	$52.76		
+9		$1,785.55		

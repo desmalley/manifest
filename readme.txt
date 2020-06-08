@@ -1,0 +1,1 @@
+You should copy the text from chrom it comes in a more parsible text file
