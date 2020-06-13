@@ -1,10 +1,30 @@
 
 '''
 This code looks prices for lots of one item from liquidation.com
+class version
 '''
 import pandas as pd
 import my_ebay_lib as ebay
 import datetime
+
+
+class manifest:
+    def __init__(self, url):
+        self.url=url
+        self.number_of_items
+    return
+
+class liquidation_manifest:
+    def __init__(self, url):
+        self.url=url
+        self.number_of_items
+    return
+
+class bulq_manifest:
+    def __init__(self, url):
+        self.url=url
+        self.number_of_items
+    return
 
 
 single=input("Is there more than one type of item in the lot?")
@@ -20,9 +40,7 @@ if single.lower() =='y' or single.lower=='yes':
 else:
     pnames=[]
     bid=float(input("What is the current bid?:  "))
-    man_txt_name=input('manifest file name including suffix (.txt or .csv): ' )
-
-
+    man_txt_name=input('manifest file name (not including suffix, assumes txt): ' )
     f = open("manifests\\"+man_txt_name+".txt", "r")
     manifest=f.read()
     f.close()

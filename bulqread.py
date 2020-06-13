@@ -2,43 +2,37 @@ import pandas as pd
 import my_ebay_lib as ebay
 import datetime
 
+#read manifest
+man_df= pd.read_csv('manifests/b3.csv')
+#man_df=df.fillna(" ") #replace NA fields with empty fields
 
-def str_to_float_price(str_prices):
-    float_prices=[]
-    for str_price in str_prices:
-        float_price=float(str_price.strip('$'))
-        float_prices.append(float_price)
-    return float_prices
-
-
-df= pd.read_csv('gen2.csv')
-old_cache_df=pd.read_csv('ebay_cache.csv')
-dfnew=df.fillna(" ") #replace NA fields with empty fields
+#read cache
+cache_df=pd.read_csv('ebay_cache.csv')
 
 #find pallet cost
-pallet_cost=sum(str_to_float_price(df["Ave. Price per Unit"]))
+pallet_cost=sum(ebay.str_to_float_price(man_df["Ave. Price per Unit"]))
 print("pallet_cost = ${}".format(pallet_cost))
 
 #find total if all items sold on ebay today
-pnames=df["Product Name"]
+pnames=man_df["Product Name"]
 ebay_sale_total=0
 old_name=""
 old_price=0
 
-ebay_cache_df=pd.DataFrame({'NAME':['New Price Entry Spacer'], 'PRICE':[0.0], 'DATE':datetime.datetime.now(),'URL':['www.google.com']})
+this_session_df=pd.DataFrame({'NAME':['New Price Entry Spacer'], 'PRICE':[0.0], 'DATE':datetime.datetime.now(),'URL':['www.google.com']})
 for name in pnames:
     print("PRODUCT NAME: {}".format(name))
-    if name==old_name:
+    if name==old_name: #Did we just looked up this price?
         print("(Repeat Price)")
         price=old_price
-    elif old_cache_df['NAME'].str.contains(name).any():
+    elif cache_df['NAME'].str.contains(name,regex=False).any():#Is this price in the cache?
         print("(Cached Price)")
-        row=old_cache_df[old_cache_df.NAME==name]
+        row=cache_df[cache_df.NAME==name]
         price=row.PRICE.values[0]
-    else:
+    else: #If not, let's look up the price on ebay
         print("Fetch Ebay Price")
         price,url=ebay.fetch_ebay_price(name)
-        ebay_cache_df=ebay_cache_df.append({'NAME':name, 'PRICE':price, 'DATE':datetime.datetime.now(),'URL':url}, ignore_index=True)
+        this_session_df=this_session_df.append({'NAME':name, 'PRICE':price, 'DATE':datetime.datetime.now(),'URL':url}, ignore_index=True)
     print("PRICE: {}".format(price))
     ebay_sale_total+=price
     old_name=name
@@ -53,10 +47,10 @@ if profit>100:
     print("this is a good deal!")
 else:
     print("this is a bad deal")
-print(old_cache_df)
+print(cache_df)
 #add new prices to cache
-old_chace_df=old_cache_df.append(ebay_cache_df, ignore_index=True)
-old_chace_df.to_csv('ebay_cache.csv',index=False)
+cache_df=cache_df.append(this_session_df, ignore_index=True)
+cache_df.to_csv('ebay_cache.csv',index=False)
 
 
 
