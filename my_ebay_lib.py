@@ -169,15 +169,16 @@ def find_prices(name_qty_df):
     in: data frame with two columns: 'name' and 'qty'
     out: data frame with cols: 'name' 'qty' 'price' 'url' 'date' add 'purl' and 'bid'
     '''
-    name_qty_dict=dict(zip(name_qty_df.name.to_list(),name_qty_df.qty.to_list()))
+    name_qty_zip=zip(name_qty_df.name.to_list(),name_qty_df.qty.to_list())
     name_list=name_qty_df["name"].to_list()
     old_name=""
     old_price=0
     old_url=''
     cache_df=pd.read_csv('ebay_cache_lower.csv')
     master_df=pd.DataFrame({'name':[None],'qty':[None],'price':[None],'date':[None],'url':[None]})
-    for name,qty in name_qty_dict.items():
-        print("PRODUCT NAME: {}".format(name))
+
+    for name,qty in name_qty_zip:
+        #print("PRODUCT NAME: {}".format(name))
         if name:
             if name==old_name: #Did we just looked up this price?
                 print("(Repeat Price)")

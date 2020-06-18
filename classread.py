@@ -1,4 +1,5 @@
 import my_ebay_lib as ebay
+import pprint as pp
 #import pdb
 '''
 This code looks prices for lots of one item from liquidation.com
@@ -6,6 +7,27 @@ class version
 you must have all of your manifests in a folder called 'manifests' in your working directory
 you must also have a csv file called ebay_cache_lower.csv in your working directory
 '''
+
+
+def phone_rank(file_path):
+    """
+    in: filename
+    out: dictionary of bestseller phones
+    """
+    ranks={}
+    with open(file_path) as record:
+      text=record.read()
+      entries=text.split('#')#text split into entries
+      entries.remove("")
+      for entry in entries:
+        lines=entry.splitlines()
+        #print(lines)
+        rank=lines[0]
+        name=lines[1]
+        ranks.update({name:rank})
+      return ranks 
+
+
 
 #***************classes
 class pallet:
@@ -15,6 +37,7 @@ class pallet:
         maybe purl and bid
         out: pallet object
         """
+        
         try:
             self.purl=df.purl[0]
         except:
@@ -29,7 +52,8 @@ class pallet:
         qty_list_strings=df.qty.tolist()
         qty_list=[float(qty) for qty in qty_list_strings]
         self.qty_tot=sum(qty_list)
-        self.gross=sum([price*qty for price in price_list for qty in qty_list])
+        posts=zip(price_list,qty_list)
+        self.gross=sum([price*qty for price,qty in posts])
         self.post_num=len(set(self.name))
         self.profit=float(self.gross)-float(self.bid)
         self.wage=self.profit/self.post_num
@@ -57,9 +81,13 @@ class pallet:
 #    print(master_df)
 #    pallet_list.append(pallet(master_df))
 #print(pallet_list)    
-
-manifest='manifests/iphone6.csv'
+#'''
+manifest='manifests/iphone.csv'
 name_qty_df=ebay.manifest_csv_to_df(manifest)
 master_df=ebay.find_prices(name_qty_df)
+
 p1=pallet(master_df)
 print(p1)
+print(master_df)
+
+#print(phone_rank('phone_rankings.txt'))
