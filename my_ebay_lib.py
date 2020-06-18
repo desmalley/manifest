@@ -202,7 +202,9 @@ def find_prices(name_qty_df):
         old_url=url
         old_price=price
         master_df=master_df.dropna(subset =["name"])#drop any empy lines
-        master_df=master_df.fillna('')
+    master_df=master_df.assign(purl=name_qty_df.purl)
+    master_df=master_df.assign(bid=name_qty_df.bid)
+    master_df=master_df.fillna('')
     return master_df
 
 
