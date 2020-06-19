@@ -129,7 +129,7 @@ def fetch_ebay_price(product_name):
         print('Your entered an empty string as a product name, Silly!')
         return 0,'no url'
     else: #normal operation
-        browser= webdriver.Chrome(executable_path="C:/Users/smalley/Desktop/PYTHON/Panda/chromedriver.exe")
+        browser= webdriver.Chrome(executable_path="chromedriver.exe")
         browser.get('https://www.ebay.com/')
         searchbar=browser.find_element_by_id("gh-ac")
         searchbar.send_keys(product_name)
