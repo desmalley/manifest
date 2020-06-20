@@ -42,13 +42,13 @@ class pallet:
         maybe purl and bid
         out: pallet object
         """
-        
+       
         try:
-            self.purl=df.purl[0]
+            self.purl=df.purl.iloc[0]
         except:
             self.purl=input('What is the url:  ')
         try:
-            self.bid=df.bid[0]
+            self.bid=df.bid.iloc[0]
         except:
             self.bid=input('What is the bid:  ')
         self.name=df.name.tolist()
@@ -64,7 +64,7 @@ class pallet:
         print(type(self.bid))
         print(self.gross)
         print(type(self.gross))
-        
+
         if isinstance(self.bid,str):  
             self.profit=self.gross-strip_dollar_format(self.bid)
         elif isinstance(self.bid,float): 
@@ -92,6 +92,7 @@ manifest_list=ebay.fetch_csv_data()
 pallet_list=[]
 for manifest in manifest_list:
     name_qty_df=ebay.manifest_csv_to_df(manifest)
+#    pdb.set_trace() 
     master_df=ebay.find_prices(name_qty_df)
     print(master_df)
     pallet_obj=pallet(master_df)

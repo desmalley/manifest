@@ -193,7 +193,9 @@ def find_prices(name_qty_df):
                 print("Fetch Ebay Price")
                 price,url=fetch_ebay_price(name)
                 cache_entry_df=pd.DataFrame({'name':[name],'price':[price],'date':[datetime.datetime.now()],'url':[url]})
-                update_cache(cache_entry_df)
+                print(cache_entry_df)
+                if price >0:
+                    update_cache(cache_entry_df)                
             session_df=pd.DataFrame({'name':[name], 'qty':[qty],'price':[price], 'date':[datetime.datetime.now()],'url':[url]})    
             master_df=master_df.append(session_df, ignore_index=True)
         else:
@@ -203,8 +205,8 @@ def find_prices(name_qty_df):
         old_url=url
         old_price=price
         master_df=master_df.dropna(subset =["name"])#drop any empy lines
-    master_df=master_df.assign(purl=name_qty_df.purl)
-    master_df=master_df.assign(bid=name_qty_df.bid)
+    master_df=master_df.assign(purl=name_qty_df.purl.iloc[0])
+    master_df=master_df.assign(bid=name_qty_df.bid.iloc[0])
     master_df=master_df.fillna('')
     return master_df
 
