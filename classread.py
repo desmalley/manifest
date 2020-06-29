@@ -1,5 +1,6 @@
 import my_ebay_lib as ebay
 import pprint as pp
+import numpy as np
 #import pdb
 '''
 This code looks prices for lots of one item from liquidation.com
@@ -71,6 +72,10 @@ class pallet:
             self.profit=self.gross-self.bid 
         elif isinstance(self.bid,int): 
             self.profit=self.gross-self.bid
+        elif isinstance(self.bid,np.integer): 
+            self.profit=self.gross-self.bid
+        else:
+             self.profit=self.gross-self.bid 
         self.wage=self.profit/self.post_num
     def __str__(self):
         output_string='''
@@ -87,16 +92,20 @@ class pallet:
 #***************script
 #url='https://www.bulq.com/detail/csaa182421/cell-phone-accessories-playtek-hifuture-fally/'
 #bid=381
-
+#pdb.set_trace() 
 manifest_list=ebay.fetch_csv_data()
 pallet_list=[]
 for manifest in manifest_list:
     name_qty_df=ebay.manifest_csv_to_df(manifest)
 #    pdb.set_trace() 
     master_df=ebay.find_prices(name_qty_df)
-    print(master_df)
+    print(master_df[['name','price']])
     pallet_obj=pallet(master_df)
     pallet_list.append(pallet_obj)
     print(pallet_obj)
- 
-
+#name_qty_df=ebay.manifest_csv_to_df('manifests/b3.csv')
+#print(name_qty_df)
+#master_df=ebay.find_prices(name_qty_df)
+#print(master_df)
+#pallet_obj=pallet(master_df)
+#print(pallet_obj)

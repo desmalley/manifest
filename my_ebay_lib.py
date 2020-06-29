@@ -10,7 +10,9 @@ options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
-
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
 
 #***************functions**********************
 
@@ -129,7 +131,8 @@ def fetch_ebay_price(product_name):
         print('Your entered an empty string as a product name, Silly!')
         return 0,'no url'
     else: #normal operation
-        browser= webdriver.Chrome(executable_path="chromedriver.exe")
+        browser=webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+        #browser=webdriver.Chrome('/home/pi/Pallet_Pleaser/manifest/chromedriver')
         browser.get('https://www.ebay.com/')
         searchbar=browser.find_element_by_id("gh-ac")
         searchbar.send_keys(product_name)
@@ -194,8 +197,10 @@ def find_prices(name_qty_df):
                 price,url=fetch_ebay_price(name)
                 cache_entry_df=pd.DataFrame({'name':[name],'price':[price],'date':[datetime.datetime.now()],'url':[url]})
                 print(cache_entry_df)
-                if price >0:
-                    update_cache(cache_entry_df)                
+#                if price >0:
+#                    update_cache(cache_entry_df)
+                update_cache(cache_entry_df)#the ebay fetch is reliable so we don't need to go back if it returns zero
+
             session_df=pd.DataFrame({'name':[name], 'qty':[qty],'price':[price], 'date':[datetime.datetime.now()],'url':[url]})    
             master_df=master_df.append(session_df, ignore_index=True)
         else:
@@ -223,7 +228,7 @@ def fetch_csv_data(folder_name='manifests'):
         for file in os.listdir(directory):
              filename = os.fsdecode(file)
              if filename.endswith(".csv"):
-                file_list.append(folder_name+'\\'+filename)
+                file_list.append(folder_name+'/'+filename)
         return file_list
     except FileNotFoundError:   #no such folder  
         print("no such folder")
